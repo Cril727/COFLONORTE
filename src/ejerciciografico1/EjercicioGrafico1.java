@@ -639,7 +639,7 @@ public class EjercicioGrafico1 {
                 encontrado = true;
             }
         }
-        
+
         if (encontrado) {
 
             JOptionPane.showMessageDialog(null,
@@ -651,7 +651,7 @@ public class EjercicioGrafico1 {
             JOptionPane.showMessageDialog(null, "No se encontraron pasajes que coincidan con la busqueda",
                     "Sin resultados",
                     JOptionPane.INFORMATION_MESSAGE);
-            
+
         }
 
     }
@@ -759,7 +759,7 @@ public class EjercicioGrafico1 {
                     "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
                     "20:00", "21:00"
                 };
-                
+
                 String nuevaHora = (String) JOptionPane.showInputDialog(null,
                         "Seleccione la nueva hora de salida",
                         "Modificar pasaje",
@@ -767,64 +767,64 @@ public class EjercicioGrafico1 {
                         null,
                         opcionesHorarios,
                         horasSalida[index]
-                        );
-                
+                );
+
                 if (nuevaHora != null) {
                     horasSalida[index] = nuevaHora;
                 }
 
                 break;
-                
+
             case "Numero de asiento":
-                try{
+                try {
                     String nuevoAsientoStr = JOptionPane.showInputDialog(null,
                             "Ingrese el nuevo numeo de asiento (1-40)",
                             "Modificar Pasaje",
                             JOptionPane.QUESTION_MESSAGE);
-                    
+
                     int nuevoAsiento = Integer.parseInt(nuevoAsientoStr);
-                    
-                    if (nuevoAsiento < 1 || nuevoAsiento >40 ) {
+
+                    if (nuevoAsiento < 1 || nuevoAsiento > 40) {
                         JOptionPane.showMessageDialog(null,
-                            "Numero de asiento Invalido debe de estar entre 1 y 40",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    }else {
+                                "Numero de asiento Invalido debe de estar entre 1 y 40",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
                         boolean asientoOcupado = false;
-                        
+
                         for (int i = 0; i < cantidadPasajeros; i++) {
-                            if (i != index &&
-                                fechasViajes[i].equals(fechasViajes[index])&&
-                                horasSalida[i].equals(horasSalida[index])&&
-                                origenes[i].equals(origenes[index])&&
-                                destinos[i].equals(destinos[index])&&
-                                numeroAsientos[i] == nuevoAsiento){
-                                
+                            if (i != index
+                                    && fechasViajes[i].equals(fechasViajes[index])
+                                    && horasSalida[i].equals(horasSalida[index])
+                                    && origenes[i].equals(origenes[index])
+                                    && destinos[i].equals(destinos[index])
+                                    && numeroAsientos[i] == nuevoAsiento) {
+
                                 asientoOcupado = true;
                                 break;
                             }
-                            
+
                         }
-                        
+
                         if (asientoOcupado) {
                             JOptionPane.showMessageDialog(null,
-                                "El asiento seleccionado ya esta ocupado para este viaje",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        }else{
+                                    "El asiento seleccionado ya esta ocupado para este viaje",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
                             numeroAsientos[index] = nuevoAsiento;
                         }
                     }
-                }catch (Exception e){
-                    
+                } catch (Exception e) {
+
                     JOptionPane.showMessageDialog(null,
-                        "Numero de asiento invalido. Ingrese un valor valido numerico.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                    
+                            "Numero de asiento invalido. Ingrese un valor valido numerico.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+
                 }
                 break;
-                
+
             case "Tipo de pasajero":
                 String[] opcionesTipoPasajero = {
                     "Regular", "Estudiante", "Adulto Mayor"
@@ -842,24 +842,54 @@ public class EjercicioGrafico1 {
 
                 if (nuevoTipo != null) {
                     tiposPasajero[index] = nuevoTipo;
-                    
+
                     double precioBase = calcularPrecioBase(origenes[index], destinos[index]);
-                    
+
                     if (nuevoTipo.equals("Estudiante")) {
                         precios[index] = precioBase * 0.8;
-                    }else if (nuevoTipo.equals("Adulto Mayor")) {
+                    } else if (nuevoTipo.equals("Adulto Mayor")) {
                         precios[index] = precioBase * 0.7;
-                    }else{
+                    } else {
                         precios[index] = precioBase;
                     }
                 }
                 break;
 
-            default:
-                throw new AssertionError();
+            case "Estado (Reservado/Confirmado)":
+                String[] opcionesEstado = {"RESERVADO", "CONFIRMADO"
+                };
 
-               
+                String nuevoEstado = (String) JOptionPane.showInputDialog(null,
+                        "Seleccion el nuevo estado del pasaje",
+                        "Modificar pasaje",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcionesEstado,
+                        reservados[index] ? "RESERVADO" : "CONFIRMADO");
+
+                if (nuevoEstado != null) {
+                    reservados[index] = nuevoEstado.equals("RESERVADO");
+                }
+
+                break;
+
         }
+
+        String infoNueva = "Información actualizada del pasaje:\n"
+                + "Pasajero: " + nombres[index] + "\n\n"
+                + "Identificación: " + identificaciones[index] + "\n"
+                + "Ruta: " + origenes[index] + " → " + destinos[index] + "\n"
+                + "Fecha y hora: " + fechasViajes[index] + " " + horasSalida[index] + "\n"
+                + "Asiento: " + numeroAsientos[index] + "\n"
+                + "Tipo de pasajero: " + tiposPasajero[index] + "\n"
+                + "Estado: " + (reservados[index] ? "RESERVADO" : "CONFIRMADO") + "\n"
+                + "Precio: $" + String.format("%.2f", precios[index]);
+
+        JOptionPane.showMessageDialog(
+                null,
+                infoNueva,
+                "Pasaje Actualizado",
+                JOptionPane.INFORMATION_MESSAGE );
 
     }
 
